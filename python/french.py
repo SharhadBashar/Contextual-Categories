@@ -7,11 +7,11 @@ from logger import Logger
 from database import Database
 from predict_iab import Predict_IAB
 from predict_apple import Predict_Apple
-from att import Audio_To_Text_EN
+from att import Audio_To_Text_FR
 from helper import download, get_apple_cat, get_iab_cat, load_topics, del_files, json_response_message
 
 if __name__ == '__main__':
-    language = 'english'
+    language = 'french'
     try:
         s3 = S3()
     except Exception as error:
@@ -29,12 +29,12 @@ if __name__ == '__main__':
         Logger(400, LOG_TYPE['e'], ERROR_START_UP.format('Predicting Apple Categories', error))
 
     try:
-        att = Audio_To_Text_EN()
+        att = Audio_To_Text_FR()
     except Exception as error:
-        Logger(400, LOG_TYPE['e'], ERROR_START_UP.format('Audio To Text: English', error))
+        Logger(400, LOG_TYPE['e'], ERROR_START_UP.format('Audio To Text: French', error))
 
     while True:
-        podcast = db.get_podcast_new(SPREAKER_ID)
+        podcast = db.get_podcast_new(RADIO_FRANCE_ID)
         if podcast:
             db.update_podcast_lock(podcast.id)
             Logger(200, LOG_TYPE['i'], PODCAST_REQUEST.format(podcast.episode_id), podcast.show_id, podcast.episode_id, language)
