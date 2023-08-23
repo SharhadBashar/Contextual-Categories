@@ -50,18 +50,29 @@ class Database:
         return count
     
     def get_podcast_new(self, publisher_id):
+        podcast = {}
         conn = pyodbc.connect(self.conn_dmp)
         query = """SELECT Id, ShowId, EpisodeId, PublisherId, 
-                    AppleContentFormatId, IabV2ContentFormatId,
+                    AppleContentFormatId,
                     PodcastName, EpisodeName, Description, Keywords,
-                    ContentUrl, 
+                    ContentUrl
                    FROM dbo.ContextualCategories
                    WHERE PublisherId = {} AND Active = 'False' AND Lock = 0
                 """.format(publisher_id)
         cursor = conn.cursor()
         cursor.execute(query)
-        podcast = cursor.fetchone()
+        podcast_db = cursor.fetchone()
         cursor.close()
+        podcast['id'] = podcast_db[0]
+        podcast['show_id'] = podcast_db[1]
+        podcast['episode_id'] = podcast_db[2]
+        podcast['publisher_id'] = podcast_db[3]
+        podcast['apple_cat'] = podcast_db[4]
+        podcast['podcast_name'] = podcast_db[5]
+        podcast['episode_name'] = podcast_db[6]
+        podcast['description'] = podcast_db[7]
+        podcast['keywords'] = podcast_db[8]
+        podcast['content_url'] = podcast_db[9]
         return podcast
     
     def write_podcast(self, data):
@@ -128,7 +139,8 @@ class Database:
                         TopicsMatch = '{}'
                         Active = 'True',
                         Lock = 0
-                   WHERE ShowId = '{}', 
+                   WHERE Id = {}, 
+                        ShowId = '{}', 
                         EpisodeId = '{}', 
                         PublisherId = '{}'
                 """.format(
@@ -137,6 +149,7 @@ class Database:
                     data['TransLink'],
                     str(data['Topics']),
                     str(data['TopicsMatch']),
+                    data['id'],
                     data['ShowId'], 
                     data['EpisodeId'], 
                     data['PublisherId']
