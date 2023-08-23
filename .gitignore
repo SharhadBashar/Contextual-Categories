@@ -1,0 +1,7 @@
+/data
+/model
+/config
+/log
+/logs
+python/__pycache__/
+python/Brewfile
