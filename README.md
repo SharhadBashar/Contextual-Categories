@@ -8,6 +8,10 @@ To install all the required libraries, run `pip install -r requirements.txt`<br>
 On first run, setup directories and download required files.<br>
 To do so run this command from the python directory: `python setup.py`<br>
 
+To Run the APP (make sure you are in `/python` folder):
+1. For English: `python english.py`
+2. For French: `python french.py`
+
 To Run the API:
 1. `uvicorn main:app --reload` 
 2. `uvicorn main:app --workers 4`
