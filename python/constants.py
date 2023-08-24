@@ -125,6 +125,7 @@ DEVICE_USEAGE = 'Transcribed using {}'
 GPU_USEAGE = 'GPU ID: {}, Load: {}%, Memory: {}%'
 CPU_USEAGE = 'CPU Cores: {}, CPU Load: 1 min: {}%, 5 min: {}%, 15 min: {}%'
 CPU_MEM_USEAGE = 'Total: {} gb, Available: {} gb, Used: {} gb, Percent: {}%'
+FAIL_PODCAST_UNLOCK = '[DB ID {}] Failed Podcast unlocked'
 
 # Error Messages
 ERROR_START_UP = 'Startup Error with {}. Full Error Traceback: {}'

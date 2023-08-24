@@ -1,7 +1,7 @@
 import os
 import json
 import pyodbc
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from constants import *
 
@@ -23,7 +23,7 @@ class Database:
             database_info['database'][database],
             database_info['username'], database_info['password']
         )
-    
+
     def get_podcast_count(self, publisher_id, show_id, episode_id):
         conn = pyodbc.connect(self.conn_dmp)
         query = """SELECT COUNT(Id)
@@ -48,7 +48,7 @@ class Database:
         count = cursor.fetchall()
         cursor.close()
         return count
-    
+
     def get_podcast_new(self, publisher_id):
         podcast = {}
         conn = pyodbc.connect(self.conn_dmp)
@@ -77,7 +77,27 @@ class Database:
             return podcast
         except:
             return None
-    
+
+    def get_podcast_fail(self, fail_tolerance = 1):
+        podcasts = []
+        conn = pyodbc.connect(self.conn_dmp)
+        query = """SELECT Id, ShowId, EpisodeId, PublisherId
+                   FROM dbo.ContextualCategories
+                   WHERE Lock = 1 AND UpdatedDate > '{}'
+                """.format(datetime.now() - timedelta(days = fail_tolerance))
+        cursor = conn.cursor()
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        for row in rows:
+            podcasts.append({
+                'id': row[0],
+                'show_id': row[1],
+                'episode_id': row[2],
+                'publisher_id': row[3]
+            })
+        cursor.close()
+        return podcasts
+        
     def write_podcast(self, data):
         data['PodcastName'] = json.dumps(data['PodcastName']).replace("'", "''").strip('\"')
         data['EpisodeName'] = json.dumps(data['EpisodeName']).replace("'", "''").strip('\"')
@@ -121,12 +141,16 @@ class Database:
         conn.commit()
         cursor.close()
 
-    def update_podcast_lock(self, id):
+    def update_podcast_lock(self, id, lock = 1):
         conn = pyodbc.connect(self.conn_dmp)
         query = """UPDATE dbo.ContextualCategories
-                   SET Lock = 1, UpdatedDate = '{}',
+                   SET Lock = {}, UpdatedDate = '{}',
                    WHERE Id = {}
-                """.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), id)
+                """.format(
+                    lock,
+                    datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                    id
+                )
         cursor = conn.cursor()
         cursor.execute(query)
         conn.commit()
