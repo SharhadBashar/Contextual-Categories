@@ -63,17 +63,20 @@ class Database:
         cursor.execute(query)
         podcast_db = cursor.fetchone()
         cursor.close()
-        podcast['id'] = podcast_db[0]
-        podcast['show_id'] = podcast_db[1]
-        podcast['episode_id'] = podcast_db[2]
-        podcast['publisher_id'] = podcast_db[3]
-        podcast['apple_cat'] = podcast_db[4]
-        podcast['podcast_name'] = podcast_db[5]
-        podcast['episode_name'] = podcast_db[6]
-        podcast['description'] = podcast_db[7]
-        podcast['keywords'] = podcast_db[8]
-        podcast['content_url'] = podcast_db[9]
-        return podcast
+        try:
+            podcast['id'] = podcast_db[0]
+            podcast['show_id'] = podcast_db[1]
+            podcast['episode_id'] = podcast_db[2]
+            podcast['publisher_id'] = podcast_db[3]
+            podcast['apple_cat'] = podcast_db[4]
+            podcast['podcast_name'] = podcast_db[5]
+            podcast['episode_name'] = podcast_db[6]
+            podcast['description'] = podcast_db[7]
+            podcast['keywords'] = podcast_db[8]
+            podcast['content_url'] = podcast_db[9]
+            return podcast
+        except:
+            return None
     
     def write_podcast(self, data):
         data['PodcastName'] = json.dumps(data['PodcastName']).replace("'", "''").strip('\"')
@@ -137,6 +140,7 @@ class Database:
                         TransLink = '{}',
                         Topics = '{}',
                         TopicsMatch = '{}'
+                        UpdatedDate = '{}',
                         Active = 'True',
                         Lock = 0
                    WHERE Id = {}, 
@@ -149,6 +153,7 @@ class Database:
                     data['TransLink'],
                     str(data['Topics']),
                     str(data['TopicsMatch']),
+                    datetime.now().strftime('%Y-%m-%d %H:%M:%S'), # UpdatedDate
                     data['id'],
                     data['ShowId'], 
                     data['EpisodeId'], 
