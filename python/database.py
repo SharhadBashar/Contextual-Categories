@@ -52,13 +52,12 @@ class Database:
     def get_podcast_new(self, publisher_id):
         podcast = {}
         conn = pyodbc.connect(self.conn_dmp)
-        query = """SELECT Id, ShowId, EpisodeId, PublisherId, 
+        query = """SELECT TOP(1) Id, ShowId, EpisodeId, PublisherId, 
                     AppleContentFormatId,
                     PodcastName, EpisodeName, Description, Keywords,
                     ContentUrl
                    FROM dbo.ContextualCategories
                    WHERE PublisherId = {} AND Active = 'False' AND Lock = 0
-                   LIMIT 1
                 """.format(publisher_id)
         cursor = conn.cursor()
         cursor.execute(query)
