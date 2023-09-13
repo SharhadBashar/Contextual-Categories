@@ -1,0 +1,38 @@
+# Include template
+include:
+  - project: 'infrastructure/gitlab-ci'
+    file: '.gitlab-ci.deploy-python.yml'
+
+# Run stg deploy on push
+install-python-app-stg:
+  tags:
+    - targetspot
+    - stg
+  variables:
+    VAULT_TOKEN: $VAULT_TOKEN_STG
+    VAULT_URL: $VAULT_URL_STG
+    SRV_LIST: "ppiq-gpu-test-1.aws.targetspot.com"
+    SVC_USER: "ppiq"
+    PROJECT_NAME: "contextual_categories"
+    TRACE: "0"
+  extends:
+    - .deploy_python
+
+# Run prd deploy on web execution
+install-python-app-prd:
+  tags:
+    - targetspot
+    - prd
+  variables:
+    VAULT_TOKEN: $VAULT_TOKEN_PRD
+    VAULT_URL: $VAULT_URL_PRD
+    SRV_LIST: "ppiq-cw-api-1.aws.targetspot.com"
+    SVC_USER: "ppiq"
+    PROJECT_NAME: "contextual_categories"
+    TRACE: "0"
+  extends:
+    - .deploy_python
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+      when: always
+    - when: never
