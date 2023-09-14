@@ -166,7 +166,7 @@ class Database:
                         TopicsMatch = '{}'
                         UpdatedDate = '{}',
                         Active = 'True',
-                        Lock = 0
+                        Lock = -1
                    WHERE Id = {}, 
                         ShowId = '{}', 
                         EpisodeId = '{}', 
