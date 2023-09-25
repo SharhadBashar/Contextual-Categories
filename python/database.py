@@ -144,7 +144,7 @@ class Database:
     def update_podcast_lock(self, id, lock = 1):
         conn = pyodbc.connect(self.conn_dmp)
         query = """UPDATE dbo.ContextualCategories
-                   SET Lock = {}, UpdatedDate = '{}',
+                   SET Lock = {}, UpdatedDate = '{}'
                    WHERE Id = {}
                 """.format(
                     lock,
