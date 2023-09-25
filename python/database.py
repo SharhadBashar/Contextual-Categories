@@ -28,7 +28,7 @@ class Database:
         conn = pyodbc.connect(self.conn_dmp)
         query = """SELECT COUNT(Id)
                    FROM dbo.ContextualCategories
-                   WHERE PublisherId = {} AND ShowId = '{}' AND EpisodeId = '{}'
+                   WHERE PublisherId = {} AND ShowId = '{}' AND EpisodeId = '{}' AND Active = 'True'
                 """.format(publisher_id, show_id, episode_id)
         cursor = conn.cursor()
         cursor.execute(query)

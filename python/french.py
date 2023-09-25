@@ -41,6 +41,7 @@ if __name__ == '__main__':
     
             if (db.get_podcast_count(podcast['publisher_id'], podcast['show_id'], podcast['episode_id']) > 0):
                 json_response_message(200, DUPLICATE_PODCAST.format(podcast['episode_id']), podcast['show_id'], podcast['episode_id'], language)
+                db.update_podcast_lock(podcast['id'], lock = -1)
                 continue
 
             if (podcast['podcast_name'] is None or podcast['podcast_name'] == ''):
