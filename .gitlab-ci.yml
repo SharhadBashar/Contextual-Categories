@@ -16,7 +16,7 @@ install-python-app-stg:
     PROJECT_NAME: "contextual_categories"
     TRACE: "0"
   extends:
-    - .deploy_python
+    - .deploy_python_categories
 
 # Run prd deploy on web execution
 install-python-app-prd:
@@ -31,7 +31,7 @@ install-python-app-prd:
     PROJECT_NAME: "contextual_categories"
     TRACE: "0"
   extends:
-    - .deploy_python
+    - .deploy_python_categories
   rules:
     - if: '$CI_PIPELINE_SOURCE == "web"'
       when: always
