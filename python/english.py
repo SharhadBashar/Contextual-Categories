@@ -39,7 +39,7 @@ if __name__ == '__main__':
             db.update_podcast_lock(podcast['id'])
             Logger(200, LOG_TYPE['i'], PODCAST_REQUEST.format(podcast['episode_id']), podcast['show_id'], podcast['episode_id'], language)
     
-            if (db.get_podcast(podcast['publisher_id'], podcast['show_id'], podcast['episode_id']) > 0):
+            if (db.get_podcast_count(podcast['publisher_id'], podcast['show_id'], podcast['episode_id']) > 0):
                 json_response_message(200, DUPLICATE_PODCAST.format(podcast['episode_id']), podcast['show_id'], podcast['episode_id'], language)
                 continue
 
