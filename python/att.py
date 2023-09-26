@@ -21,13 +21,14 @@ class Audio_To_Text_EN:
 			return json_response_message(422, ERROR_WHISPER_MODEL.format(model_type), language = 'english')
 
 		DEVICE = 'cuda' if (torch.cuda.is_available() and GPUtil.getGPUs()[0].load < GPU_LOAD) else 'cpu'
-		Logger(200, LOG_TYPE['i'], DEVICE_USEAGE.format(DEVICE), language = self.language)
+		self.device = DEVICE
 		if (DEVICE == 'cpu'):
 			os.nice(NICE_VAL)
 		self.model = whisper.load_model(model_type, device = DEVICE)
 
 	def transcribe(self, audio_file, show_id, episode_id, language = 'english'):
 		try:
+			Logger(200, LOG_TYPE['i'], DEVICE_USEAGE.format(episode_id, self.device), language = language)
 			return self.model.transcribe(os.path.join(self.audio_data_path, audio_file))
 		except Exception as error:
 			return json_response_message(422, ERROR_TRANSCRIBE.format(episode_id, error), show_id, episode_id, language)
@@ -50,10 +51,17 @@ class Audio_To_Text_FR:
 		if (model_type not in WHISPER_MODEL_TYPES):
 			return json_response_message(422, ERROR_WHISPER_MODEL.format(model_type), language = 'french')
 		
+		DEVICE = 'cuda' if (torch.cuda.is_available() and GPUtil.getGPUs()[0].load < GPU_LOAD) else 'cpu'
+		self.device = DEVICE
+		if (DEVICE == 'cpu'):
+			os.nice(NICE_VAL)
+		self.model = whisper.load_model(model_type, device = DEVICE)
+		
 		self.model = whisper.load_model(model_type)
 
 	def transcribe(self, audio_file, show_id, episode_id, language = 'french'):
 		try:
+			Logger(200, LOG_TYPE['i'], DEVICE_USEAGE.format(episode_id, self.device), language = language)
 			return self.model.transcribe(os.path.join(self.audio_data_path, audio_file))
 		except Exception as error:
 			return json_response_message(422, ERROR_TRANSCRIBE.format(episode_id, error), show_id, episode_id, language)
