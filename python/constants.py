@@ -111,7 +111,7 @@ SETUP = {
 
 # Info Messages:
 API_RUNNING = 'API is up and running. WOOHOO!!!'
-PODCAST_REQUEST = '[Podcast {}] Recieved request'
+PODCAST_REQUEST = '[Podcast {}] Received request'
 API_SUCCESS = '[Podcast {}] Categorized successfully'
 PODCAST_DOWNLOAD = '[Podcast {}] Downloaded successfully at {}'
 TRANSCRIBE_SAVE = '[Podcast {}] Transcribed successfully at {}'
