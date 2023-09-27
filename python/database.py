@@ -167,9 +167,9 @@ class Database:
                         UpdatedDate = '{}',
                         Active = 'True',
                         Lock = -1
-                   WHERE Id = {}, 
-                        ShowId = '{}', 
-                        EpisodeId = '{}', 
+                   WHERE Id = {} AND 
+                        ShowId = '{}' AND 
+                        EpisodeId = '{}' AND 
                         PublisherId = '{}'
                 """.format(
                     data['AppleContentFormatId'],
