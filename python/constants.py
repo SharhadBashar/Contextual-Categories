@@ -145,3 +145,33 @@ ERROR_TOPICS = '[Podcast {}] Error -> class: helper; function: load_topics. Full
 ERROR_DELETE_FILES = '[Podcast {}] Error -> class: helper; function: del_files. Full Error Traceback: {}'
 ERROR_DB_WRITE = '[Podcast {}] Error -> unable to write to database. Full Error Traceback: {}'
 FILE_UPDATE_FAIL = '[File {}] Could NOT be updated'
+
+# Tests
+TESTS = {
+    '-aws': ['read', 'write'],
+    '-db': ['read', 'write', 'update', 'delete'],
+    '-helper': ['download', 'delete'],
+    '-att': ['transcribe'],
+    '-contextual': ['apple_cat', 'iab_cat', 'topics']
+}
+TEST_CONSOLE_MISTAKE = '''
+Unit Test instructions:
+    1.  To run all unit tests, run `python test.py -a`, and then enter "Y" in the following prompt
+
+    2.  To run individual functionality tests, pick the functionality to test.
+        Current functionalities includes are:
+        a.  AWS               -> run `python test.py -aws`
+        b.  Database          -> run `python test.py -db`
+        c.  Helper Functions  -> run `python test.py -helper`
+        d.  Transcription     -> run `python test.py -att`
+        e.  Contextualization -> run `python test.py -contextual`
+
+    3.  To run individual functions within each functionality, run the instructions in (2) with the name of the function after
+        For example to run Database write test, run `python test.py -db write`
+        Functions for each functionality are:
+        '-aws': ['read', 'write']
+        '-db': ['read', 'write', 'update', 'delete']
+        '-helper': ['download', 'delete']
+        '-att': ['transcribe']
+        '-contextual': ['apple_cat', 'iab_cat', 'topics']
+'''
