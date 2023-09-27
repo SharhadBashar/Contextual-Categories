@@ -178,7 +178,7 @@ class Database:
                     str(data['Topics']),
                     str(data['TopicsMatch']),
                     datetime.now().strftime('%Y-%m-%d %H:%M:%S'), # UpdatedDate
-                    data['id'],
+                    data['Id'],
                     data['ShowId'], 
                     data['EpisodeId'], 
                     data['PublisherId']

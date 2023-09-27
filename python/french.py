@@ -82,7 +82,7 @@ if __name__ == '__main__':
                 continue
 
             db_data = {} 
-            db_data['id'] = podcast['id']
+            db_data['Id'] = podcast['id']
             db_data['ShowId'] = podcast['show_id']
             db_data['EpisodeId'] = podcast['episode_id']
             db_data['PublisherId'] = podcast['publisher_id']
