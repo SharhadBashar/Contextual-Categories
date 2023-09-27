@@ -163,7 +163,7 @@ class Database:
                         IabV2ContentFormatId = {},
                         TransLink = '{}',
                         Topics = '{}',
-                        TopicsMatch = '{}'
+                        TopicsMatch = '{}',
                         UpdatedDate = '{}',
                         Active = 'True',
                         Lock = -1

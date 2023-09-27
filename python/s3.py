@@ -3,6 +3,7 @@ import sys
 import logging
 from tqdm import tqdm
 from pathlib import Path
+from datetime import datetime
 
 import boto3
 from boto3 import client
@@ -142,11 +143,15 @@ if __name__ == '__main__':
             print('Read not successful. Fill error traceback as follows:')
             print(e)
     elif (command == '-w'):
-        response = s3.upload_file(os.path.join(PATH_DEBUG, 'test_aws.pkl'), S3_TRANSCRIBE['name'])
-        if (response):
-            print('Write successful. WOOHOO!!!')
-        else:
-            print('Write not successful. Fill error traceback above')
+        now = datetime.now()
+        f = open(os.path.join(PATH_DEBUG, 'test_aws.txt'), 'w')
+        f.write(now)
+        f.close()
+        # response = s3.upload_file(os.path.join(PATH_DEBUG, 'test_aws.pkl'), S3_TRANSCRIBE['name'])
+        # if (response):
+        #     print('Write successful. WOOHOO!!!')
+        # else:
+        #     print('Write not successful. Fill error traceback above')
     else:
         print('Type -r for read test or -w for write test')
         quit()
