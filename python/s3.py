@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 from tqdm import tqdm
 from pathlib import Path
@@ -6,6 +7,8 @@ from pathlib import Path
 import boto3
 from boto3 import client
 from botocore.exceptions import ClientError
+
+from constants import *
 
 class S3:
     def __init__(self):
@@ -121,9 +124,29 @@ class S3:
             print(f'-- {object_summary.key}')
         
 if __name__ == '__main__':
+    try:
+        command = sys.argv[1].lower()
+    except IndexError:
+        print('Type -r for read test or -w for write test')
+        quit()
+
     s3 = S3()
-    s3.print_buckets()
-    print()
-    for bucket in s3.get_buckets(s3):
-        print('Bucket Name:', bucket)
-        s3.print_files_in_buckets(bucket)
+    if (command == '-r'):
+        try:
+            s3.print_buckets()
+            print()
+            for bucket in s3.get_buckets(s3):
+                print('Bucket Name:', bucket)
+                s3.print_files_in_buckets(bucket)
+        except Exception as e:
+            print('Read not successful. Fill error traceback as follows:')
+            print(e)
+    elif (command == '-w'):
+        response = s3.upload_file(os.path.join(PATH_DEBUG, 'test_aws.pkl'), S3_TRANSCRIBE['name'])
+        if (response):
+            print('Write successful. WOOHOO!!!')
+        else:
+            print('Write not successful. Fill error traceback above')
+    else:
+        print('Type -r for read test or -w for write test')
+        quit()
