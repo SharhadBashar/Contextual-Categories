@@ -50,18 +50,19 @@ if __name__ == '__main__':
             if (podcast['episode_name'] is None or podcast['episode_name'] == ''):
                 json_response_message(404, ERROR_EPISODE_NAME.format(podcast['episode_id']), podcast['show_id'], podcast['episode_id'], language)
                 continue
-
-            if (podcast['apple_cat'] != 0):
-                apple_cat = podcast['apple_cat']
-            else:                 
-                podcast['description'] = '' if podcast['description'] is None else podcast['description']
-                podcast['keywords'] = [] if podcast['keywords'] is None else podcast['keywords']
-                data = podcast['podcast_name'] + ' ' + \
-                        podcast['episode_name'] + ' ' + \
-                        podcast['description'] + ' ' + \
-                        ' '.join(podcast['keywords'])
-                apple_cat_cleaned_data = predict_apple.clean_data(data, podcast['show_id'], podcast['episode_id'], language)
-                apple_cat = predict_apple.predict(apple_cat_cleaned_data, podcast['show_id'], podcast['episode_id'], language)
+            
+            apple_cat = podcast['apple_cat']
+            # if (podcast['apple_cat'] != 0):
+            #     apple_cat = podcast['apple_cat']
+            # else:                 
+            #     podcast['description'] = '' if podcast['description'] is None else podcast['description']
+            #     podcast['keywords'] = [] if podcast['keywords'] is None else podcast['keywords']
+            #     data = podcast['podcast_name'] + ' ' + \
+            #             podcast['episode_name'] + ' ' + \
+            #             podcast['description'] + ' ' + \
+            #             ' '.join(podcast['keywords'])
+            #     apple_cat_cleaned_data = predict_apple.clean_data(data, podcast['show_id'], podcast['episode_id'], language)
+            #     apple_cat = predict_apple.predict(apple_cat_cleaned_data, podcast['show_id'], podcast['episode_id'], language)
 
             file_name = download(podcast['episode_id'], podcast['content_url'], podcast['show_id'], language)
 
