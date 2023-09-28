@@ -40,7 +40,7 @@ class Database:
         conn = pyodbc.connect(self.conn_dmp)
         query = """SELECT PublisherId, COUNT(*) AS Total
                    FROM dbo.ContextualCategories
-                   WHERE CreatedDate > DATEADD(HOUR, {}, GETDATE())
+                   WHERE UpdatedDate > DATEADD(HOUR, {}, GETDATE()) AND Active = 'True' AND Lock = -1
                    GROUP BY PublisherId
                 """.format(time_diff)
         cursor = conn.cursor()
