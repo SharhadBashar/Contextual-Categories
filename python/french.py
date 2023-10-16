@@ -50,10 +50,14 @@ if __name__ == '__main__':
             if (podcast['episode_name'] is None or podcast['episode_name'] == ''):
                 json_response_message(404, ERROR_EPISODE_NAME.format(podcast['episode_id']), podcast['show_id'], podcast['episode_id'], language)
                 continue
-            
+
+            # These two lines below are temporary for RF
             apple_cat = podcast['apple_cat']
+            apple_cat_db = apple_cat
+
             # if (podcast['apple_cat'] != 0):
             #     apple_cat = podcast['apple_cat']
+            #     apple_cat_db = apple_cat
             # else:                 
             #     podcast['description'] = '' if podcast['description'] is None else podcast['description']
             #     podcast['keywords'] = [] if podcast['keywords'] is None else podcast['keywords']
@@ -63,6 +67,7 @@ if __name__ == '__main__':
             #             ' '.join(podcast['keywords'])
             #     apple_cat_cleaned_data = predict_apple.clean_data(data, podcast['show_id'], podcast['episode_id'], language)
             #     apple_cat = predict_apple.predict(apple_cat_cleaned_data, podcast['show_id'], podcast['episode_id'], language)
+            #     apple_cat_db = get_apple_cat(apple_cat, podcast['show_id'], podcast['episode_id'], language)
 
             file_name = download(podcast['episode_id'], podcast['content_url'], podcast['show_id'], language)
 
@@ -87,7 +92,7 @@ if __name__ == '__main__':
             db_data['ShowId'] = podcast['show_id']
             db_data['EpisodeId'] = podcast['episode_id']
             db_data['PublisherId'] = podcast['publisher_id']
-            db_data['AppleContentFormatId'] = get_apple_cat(apple_cat, podcast['show_id'], podcast['episode_id'], language)
+            db_data['AppleContentFormatId'] = apple_cat_db
             db_data['IabV2ContentFormatId'] = get_iab_cat(text_file, podcast['show_id'], podcast['episode_id'], language)
             db_data['TransLink'] = S3_TRANSCRIBE['link'] + text_file
             topics, topics_match = load_topics(text_file, podcast['show_id'], podcast['episode_id'], language)
