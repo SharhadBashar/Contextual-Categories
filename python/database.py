@@ -58,6 +58,7 @@ class Database:
                     ContentUrl
                    FROM dbo.ContextualCategories
                    WHERE PublisherId = {} AND Active = 'False' AND Lock = 0
+                   ORDER BY Id DESC
                 """.format(publisher_id)
         cursor = conn.cursor()
         cursor.execute(query)
