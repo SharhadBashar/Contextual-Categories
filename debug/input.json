@@ -1,4 +1,5 @@
-{
+[{
+    "id": 1,
     "language": "english",
     "show_id": "3275545",
     "episode_id": "53967315",
@@ -10,4 +11,18 @@
     "description": "PWTorch editor Wade Keller is joined by Darrin Lilly from PWTorch. They discuss the Cody-Brock Lesnar angle, the sitdown interview segments with Seth Rollins, the Becky Lynch-Trish contract signing, Imperium, whether Roman Reigns could actually break Bruno Sammartino's record for days as champion, and much more with live callers and emails throughout. They also talk with two on-site correspondents who share what happened in the arena that didn't air on TV and insights on the pace of the show and how fans reacted to certain wrestlers.", 
     "keywords": [],
     "content_url": "https://api.spreaker.com/download/episode/53967315/20230522wkpwp_raw.mp3"
-}
+},
+{
+    "id": 1,
+    "language": "french",
+    "show_id": "24296",
+    "episode_id": "24296",
+    "publisher_id": 51,
+    "podcast_name": "Les journaux de France Bleu La Rochelle",
+    "episode_name": "Les infos de 12h00 du mercredi 18 octobre 2023",
+    "apple_cat": 51,
+    "content_type": "audio",
+    "description": "durée : 00:06:23 - Journal de 12h00 - FB La Rochelle",
+    "keywords": [],
+    "content_url": "https://podcast-redirect.radiofrance.fr/podcast09/17829-17.10.2023-ITEMA_23522400-2023B32505S0290-21.mp3"
+}]
