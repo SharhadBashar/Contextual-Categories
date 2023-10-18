@@ -59,7 +59,6 @@ def load_topics(text_file, show_id, episode_id, language):
         file = open(os.path.join(PATH_DATA_CATEGORY, text_file), 'rb')
         data = pickle.load(file)
         return json.dumps(list(data.keys()), ensure_ascii = False), json.dumps(data, ensure_ascii = False)
-        # return list(data.keys()), data
     except Exception as error:
         return json_response_message(422, ERROR_TOPICS.format(episode_id, error), show_id, episode_id, language)
 
