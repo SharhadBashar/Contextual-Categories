@@ -14,10 +14,10 @@ def read_inputs_cmd():
     podcast_input = {}
     return podcast_input
 
-def read_inputs_file(file_name):
+def read_inputs_file(language, file_name):
     with open(os.path.join(PATH_DEBUG, file_name)) as file:
         podcast_input = json.load(file)
-    return podcast_input
+    return podcast_input[language]
 
 def debug_get_query(data):
     data['PodcastName'] = json.dumps(data['PodcastName']).replace("'", "''").strip('\"')
@@ -32,27 +32,31 @@ def debug_get_query(data):
     topics_match = json.dumps({data['TopicsMatch']})
     
     conn = pyodbc.connect(self.conn_dmp)
-    query = """
-    INSERT INTO 
-            dbo.ContextualCategories 
-            (ShowId, EpisodeId, PublisherId, AppleContentFormatId, IabV2ContentFormatId, 
-            Active, CreatedDate, UpdatedDate,
-            PodcastName, EpisodeName, Keywords,
-            ContentType, ContentUrl, TransLink,
-            Topics, TopicsMatch, Description)
-            VALUES 
-            ('{data['ShowId']}', '{data['EpisodeId']}', {data['PublisherId']}, {data['AppleContentFormatId']}, {data['IabV2ContentFormatId']},
-            'True', '{{}}', '{{}}', 
-            '{data['PodcastName']}', 
-            '{data['EpisodeName']}', 
-            '{data['Keywords']}',
-            'audio', 
-            '{data['ContentUrl']}', 
-            '{data['TransLink']}', 
-            '{{}}', 
-            '{{}}', 
-            '{data['Description']}')
-    """.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), topics, topics_match)
+    query = """UPDATE dbo.ContextualCategories
+                SET AppleContentFormatId = {{}},
+                    IabV2ContentFormatId = {{}},
+                    TransLink = '{{}}',
+                    Topics = '{{}}',
+                    TopicsMatch = '{{}}',
+                    UpdatedDate = '{{}}',
+                    Active = 'True',
+                    Lock = -1
+                WHERE Id = {{}} AND 
+                    ShowId = '{{}}' AND 
+                    EpisodeId = '{{}}' AND 
+                    PublisherId = '{{}}'
+            """.format(
+                '{data['AppleContentFormatId']}',
+                '{data['IabV2ContentFormatId']}',
+                '{data['TransLink']}',
+                str('{data['Topics']}'),
+                str('{data['TopicsMatch']}'),
+                datetime.now().strftime('%Y-%m-%d %H:%M:%S'), # UpdatedDate
+                '{data['Id']}',
+                '{data['ShowId']}', 
+                '{data['EpisodeId']}', 
+                '{data['PublisherId']}'
+            )
     cursor = conn.cursor()
     cursor.execute(query)
     conn.commit()
@@ -66,25 +70,26 @@ def runner(podcast):
         att = Audio_To_Text_EN()
     elif (podcast['language'] == 'french'):
         att = Audio_To_Text_FR()
-    if (podcast['apple_cat'] == ''):
+    if (podcast['apple_cat'] != 0):
         predict_apple = Predict_Apple()
         data = podcast['podcast_name'] + podcast['episode_name'] + podcast['description'] + ' '.join(podcast['keywords'])
         apple_cat_cleaned_data = predict_apple.clean_data(data, 'debug', 'debug', podcast['language'])
         apple_cat = predict_apple.predict(apple_cat_cleaned_data, 'debug', 'debug', podcast['language'])
+        apple_cat_db = get_apple_cat(apple_cat, 'debug', 'debug', podcast['language'])
     else:
         apple_cat = podcast['apple_cat']
+        apple_cat_db = apple_cat
     file_name = download(podcast['episode_id'], podcast['content_url'], 'debug', podcast['language'])
-
     text = att.transcribe(file_name, 'debug', 'debug', podcast['language'])
     text_file = att.save_text(text, file_name.split('.')[0] + PKL, 'debug', 'debug', podcast['language'])
-
     Predict_IAB(text_file, 'debug', 'debug', podcast['language'])
     
-    db_data = {} 
+    db_data = {}
+    db_data['Id'] = podcast['id']
     db_data['ShowId'] = podcast['show_id']
     db_data['EpisodeId'] = podcast['episode_id'] 
     db_data['PublisherId'] = podcast['publisher_id']
-    db_data['AppleContentFormatId'] = get_apple_cat(apple_cat, 'debug', 'debug', podcast['language'])
+    db_data['AppleContentFormatId'] = apple_cat_db
     db_data['IabV2ContentFormatId'] = get_iab_cat(text_file, 'debug', 'debug', podcast['language'])
     db_data['PodcastName'] = podcast['podcast_name']
     db_data['EpisodeName'] = podcast['episode_name']
@@ -110,47 +115,15 @@ if __name__ == '__main__':
     
     if (command == '-f'):
         try:
-            file_name = sys.argv[2].lower()
+            language = sys.argv[2].lower()
+            file_name = sys.argv[3].lower()
         except:
             file_name = 'input.json'
-        podcast_input = read_inputs_file(file_name)
+        podcast_input = read_inputs_file(language, file_name)
     elif (command == '-cmd'):
         podcast_input = read_inputs_cmd()
     else:
         print('Type -cmd or -f for command line inputs or json file inputs')
         quit()
     runner(podcast_input)
-    
-    
-    
-    '''
-    topics = json.dumps(["wrestling", "podcast", "vip", "wwe", "week"])
-    topics_match = json.dumps({"wrestling": {"id": 546, "data": "wrestling", "table": "Wrestling", "score": 1.0000, "count": 104}, 
-            "podcast": {"id": 371, "data": "podcast", "table": "Talk Radio", "score": 0.6291, "count": 63}, 
-            "vip": {"id": 1025, "data": "vip", "table": "Interactive", "score": 0.4199, "count": 62}, 
-            "wwe": {"id": 546, "data": "wwe", "table": "Wrestling", "score": 0.8116, "count": 45}, 
-            "week": {"id": 164, "data": "week", "table": "Anniversary", "score": 0.3317, "count": 43}})
-    conn = pyodbc.connect(self.conn_dmp)
-    query = """
-    INSERT INTO 
-            dbo.ContextualCategories 
-            (ShowId, EpisodeId, PublisherId, AppleContentFormatId, IabV2ContentFormatId, 
-            Active, CreatedDate, UpdatedDate,
-            PodcastName, EpisodeName, Keywords,
-            ContentType, ContentUrl, TransLink,
-            Topics, TopicsMatch, Description)
-            VALUES 
-            ('3464539', '53745822', 68, 109, 546,
-            'True', '{}', '{}', 
-            'Test podcast name', 'test episode name', '[]',
-            'audio', 'https://api.spreaker.com/download/episode/53772091/20230507wkpwp_intclassic.mp3', 
-            'https://s3.console.aws.amazon.com/s3/buckets/ts-transcription?region=us-east-1&prefix=53745822.pkl', 
-            '{}', 
-            '{}', 
-            'test description')
-    """.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), datetime.now().strftime('%Y-%m-%d %H:%M:%S'), topics, topics_match)
-    cursor = conn.cursor()
-    cursor.execute(query)
-    conn.commit()
-    cursor.close()
-'''
+
