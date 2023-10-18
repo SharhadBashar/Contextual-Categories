@@ -28,9 +28,6 @@ def debug_get_query(data):
     Copy the following
     >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     
-    topics = json.dumps({data['Topics']})
-    topics_match = json.dumps({data['TopicsMatch']})
-    
     conn = pyodbc.connect(self.conn_dmp)
     query = """UPDATE dbo.ContextualCategories
                 SET AppleContentFormatId = {{}},
