@@ -1,8 +1,11 @@
 import sys
 import pytest
 from pprint import pprint
+from datetime import datetime
 
+from s3 import S3
 from constants import *
+
 '''
 if __name__ == '__main__':
     try:
@@ -45,6 +48,17 @@ class Test:
     def all(self):
         print('all')
         
+    def aws(self, test_type = ''):
+        s3 = S3()
+        if (test_type == 'read'):
+            return s3.check_file(S3_CONTEXTUAL_WEB_API['name'], TEST_AWS_READ_FILE)
+        elif(test_type == 'write'):
+            now = datetime.now()
+            f = open(os.path.join(PATH_DEBUG, now + TXT), 'w')
+            f.write(now)
+            f.close()
+            s3.check_file(S3_CONTEXTUAL_WEB_API['name'], TEST_AWS_READ_FILE)
+                    
 if __name__ == '__main__':
     tests = list(TESTS.keys())
     try:
@@ -72,6 +86,3 @@ if __name__ == '__main__':
     else:
         print(TEST_CONSOLE_MISTAKE)
         quit()
-    
-        
-    

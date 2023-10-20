@@ -84,6 +84,7 @@ S3_CONTEXTUAL_WEB_API = {
     'name': 'ts-contextual-web-api',
     'link': 'https://s3.console.aws.amazon.com/s3/buckets/ts-contextual-web-api?region=us-east-1'
 }
+
 SETUP = {
     'directory': [
         PATH_DATA,
@@ -148,11 +149,11 @@ FILE_UPDATE_FAIL = '[File {}] Could NOT be updated'
 
 # Tests
 TESTS = {
-    '-aws': ['read', 'write'],
-    '-db': ['read', 'write', 'update', 'delete'],
-    '-helper': ['download', 'delete'],
-    '-att': ['transcribe'],
-    '-contextual': ['apple_cat', 'iab_cat', 'topics']
+    '-aws': ['read', 'write'], # Test aws
+    '-db': ['read', 'write', 'update', 'delete'], # Test DB
+    '-hp': ['download', 'delete'], # Test Helper
+    '-att': ['transcribe'], # Test Audio to Transcribe
+    '-ct': ['apple_cat', 'iab_cat', 'topics'] # Text Contextual
 }
 TEST_CONSOLE_MISTAKE = '''
 Unit Test instructions:
@@ -175,3 +176,5 @@ Unit Test instructions:
         '-att': ['transcribe']
         '-contextual': ['apple_cat', 'iab_cat', 'topics']
 '''
+TEST_AWS_READ_FILE = 'test_read_aws.txt'
+TEST_AWS_WRITE_FILE = 'test_write_aws.txt'
