@@ -85,6 +85,6 @@ def add(language, stop_word):
     S3().upload_file(os.path.join(PATH_STOP_WORDS, 'stop_words_{}.pkl'.format(language)), S3_CONTEXTUAL_WEB_API['name'])
     Logger(200, LOG_TYPE['i'], STOP_WORD_FILE_UPLOADED.format(language))
 
-@app.get('/purge', status_code = status.HTTP_200_OK)
+@app.get('/pur9e', status_code = status.HTTP_200_OK)
 def purge():
     delete()
