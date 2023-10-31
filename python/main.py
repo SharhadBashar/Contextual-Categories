@@ -69,11 +69,11 @@ def update_file(file_name):
     if (file_name in list(SETUP['download'].keys())):
         update(file_name, S3())
         if (time.time() - os.stat(os.path.join(SETUP['download'][file_name], file_name))[8] < FILE_UPDATE_TIME_DELTA):
-            Logger(200, LOG_TYPE['i'], FILE_UPDATE.format(file_name))
+            Logger(200, LOG_TYPE['i'], FILE_UPDATE.format(file_name), language = file_name.split('_')[2].split('.')[0])
         else:
-            Logger(422, LOG_TYPE['e'], FILE_UPDATE_FAIL.format(file_name))
+            Logger(422, LOG_TYPE['e'], FILE_UPDATE_FAIL.format(file_name), language = file_name.split('_')[2].split('.')[0])
     else:
-        Logger(404, LOG_TYPE['e'], FILE_UPDATE_WRONG_FILE.format(file_name))
+        Logger(404, LOG_TYPE['e'], FILE_UPDATE_WRONG_FILE.format(file_name), language = file_name.split('_')[2].split('.')[0])
 
 @app.get('/add_stop_word/{language}/{stop_word}', status_code = status.HTTP_200_OK)
 def add(language, stop_word):
