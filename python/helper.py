@@ -87,3 +87,26 @@ def sort_hourly_transaction(publisher_count_list):
         total += publisher[1]
     message['Total'] = '{} podcasts categorized'.format(total)
     return message
+
+def add_stop_word(stop_word, stop_word_language):
+    try:
+        stop_words_file = open(os.path.join(PATH_STOP_WORDS, 'stop_words_{}.pkl'.format(stop_word_language)), READ)
+    except Exception as error:
+        return json_response_message(404, STOP_WORDS_FILE_NOT_FOUND.format(stop_word_language, error), language = stop_word_language)
+
+    try:
+        stop_word_list = pickle.load(stop_words_file)
+    except:
+        stop_word_list = set()
+
+    stop_words_file.close()
+    stop_word_list.add(stop_word)
+
+    try:
+        stop_words_file = open(os.path.join(PATH_STOP_WORDS, 'stop_words_{}.pkl'.format(stop_word_language)), WRITE)
+    except Exception as error:
+        return json_response_message(404, STOP_WORDS_FILE_NOT_FOUND.format(stop_word_language, error), language = stop_word_language)
+    
+    pickle.dump(stop_word_list, stop_words_file)
+    stop_words_file.close()
+    return True

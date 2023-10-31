@@ -7,6 +7,9 @@ SPREAKER_ID = 68
 RADIO_FRANCE_ID = 51
 FILE_UPDATE_TIME_DELTA = 100
 
+READ = 'rb'
+WRITE = 'wb'
+
 # Path
 PATH_DATA = '../data/'
 PATH_MODEL = '../model/'
@@ -128,6 +131,9 @@ GPU_USEAGE = 'GPU ID: {}, Load: {}%, Memory: {}%'
 CPU_USEAGE = 'CPU Cores: {}, CPU Load: 1 min: {}%, 5 min: {}%, 15 min: {}%'
 CPU_MEM_USEAGE = 'Total: {} gb, Available: {} gb, Used: {} gb, Percent: {}%'
 FAIL_PODCAST_UNLOCK = '[DB ID {}] Failed Podcast unlocked'
+STOP_WORD_ADDED = '{} added as a {} stop word'
+STOP_WORD_FILE_UPLOADED = '{} stop word file uploaded to S3'
+FILE_PRUGE_COUNT = '{} files are to be deleted'
 
 # Error Messages
 ERROR_START_UP = 'Startup Error with {}. Full Error Traceback: {}'
@@ -148,6 +154,8 @@ ERROR_DELETE_FILES = '[Podcast {}] Error -> class: helper; function: del_files. 
 ERROR_DB_WRITE = '[Podcast {}] Error -> unable to write to database. Full Error Traceback: {}'
 FILE_UPDATE_FAIL = '[File {}] Could NOT be updated'
 FILE_UPDATE_WRONG_FILE = '[File {}] Does not exist. Please check again'
+STOP_WORDS_FILE_NOT_FOUND = '{} stop words file not found. Full Error Traceback: {}'
+STOP_WORD_ADDED_FAILED = '{} could not be added as a {} stop word. Check log for error'
 
 # Tests
 TESTS = {

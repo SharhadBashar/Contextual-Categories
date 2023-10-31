@@ -8,10 +8,11 @@ from fastapi import FastAPI, status
 
 from s3 import S3
 from constants import *
+from purge import delete
 from logger import Logger
 from database import Database
 from check_file_update import update
-from helper import sort_hourly_transaction, json_response_message
+from helper import sort_hourly_transaction, json_response_message, add_stop_word
 
 try:
     db = Database(env = 'prd')
@@ -73,3 +74,17 @@ def update_file(file_name):
             Logger(422, LOG_TYPE['e'], FILE_UPDATE_FAIL.format(file_name))
     else:
         Logger(404, LOG_TYPE['e'], FILE_UPDATE_WRONG_FILE.format(file_name))
+
+@app.get('/add_stop_word/{language}/{stop_word}', status_code = status.HTTP_200_OK)
+def add(language, stop_word):
+    result = add_stop_word(stop_word, language)
+    if result:
+        Logger(201, LOG_TYPE['i'], STOP_WORD_ADDED.format(stop_word, language))
+    else:
+        Logger(422, LOG_TYPE['e'], STOP_WORD_ADDED_FAILED.format(stop_word, language))
+    S3.upload_file(os.path.join(PATH_STOP_WORDS, 'stop_words_{}.pkl'.format(language)), S3_CONTEXTUAL_WEB_API['name'])
+    Logger(200, LOG_TYPE['i'], STOP_WORD_FILE_UPLOADED.format(language))
+
+@app.get('/purge', status_code = status.HTTP_200_OK)
+def purge():
+    delete()
