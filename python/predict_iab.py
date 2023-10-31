@@ -1,6 +1,8 @@
 import os
+import json
 import torch
 import pickle
+import string
 from tqdm import tqdm
 from cleantext import clean
 from collections import Counter
@@ -34,7 +36,7 @@ class Predict_IAB:
 		self.get_custom_stopwords()
 		text = self.clean_text(pickle.load(open(os.path.join(self.text_data_path, text_file), 'rb')))
 
-		recurring_n_words = self.get_recurring_n(text, n = RECURRING_N)
+		recurring_n_words, recurring_n_words_original = self.get_recurring_n(text, n = RECURRING_N), []
 		if (self.language != 'english'):
 			recurring_n_words, recurring_n_words_original = self.translate_words(recurring_n_words)
 		mapping = self.score_mapping(recurring_n_words, category_list, self.model_name, recurring_n_words_original)
@@ -49,12 +51,13 @@ class Predict_IAB:
 		stop = stopwords.words(self.language)
 		lemmatizer = WordNetLemmatizer()
 		text = text_dict['text'].replace('[^A-Za-z0-9 ]+', ' ')
-		text = clean(text, clean_all = False, 
-						   extra_spaces = True, 
+		if (self.language == 'french'): text = text.replace("'", ' ').replace('-', ' ')
+		text = clean(text, clean_all = False,
+						   extra_spaces = True,
 						   stemming = False,
-						   stopwords = True, 
-						   lowercase = True, 
-						   numbers = True, 
+						   stopwords = True,
+						   lowercase = True,
+						   numbers = True,
 						   punct = True
 					)
 		text = ' '.join([word for word in text.split() if word not in (stop)])
