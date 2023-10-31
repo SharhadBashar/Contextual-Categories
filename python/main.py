@@ -77,6 +77,7 @@ def update_file(file_name):
 
 @app.get('/add_stop_word/{language}/{stop_word}', status_code = status.HTTP_200_OK)
 def add(language, stop_word):
+    stop_word = stop_word.lower()
     result = add_stop_word(stop_word, language)
     if result:
         Logger(201, LOG_TYPE['i'], STOP_WORD_ADDED.format(stop_word, language))
