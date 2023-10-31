@@ -5,6 +5,7 @@ RECURRING_N = 5
 NICE_VAL = 3
 SPREAKER_ID = 68
 RADIO_FRANCE_ID = 51
+FILE_UPDATE_TIME_DELTA = 100
 
 # Path
 PATH_DATA = '../data/'
@@ -146,6 +147,7 @@ ERROR_TOPICS = '[Podcast {}] Error -> class: helper; function: load_topics. Full
 ERROR_DELETE_FILES = '[Podcast {}] Error -> class: helper; function: del_files. Full Error Traceback: {}'
 ERROR_DB_WRITE = '[Podcast {}] Error -> unable to write to database. Full Error Traceback: {}'
 FILE_UPDATE_FAIL = '[File {}] Could NOT be updated'
+FILE_UPDATE_WRONG_FILE = '[File {}] Does not exist. Please check again'
 
 # Tests
 TESTS = {

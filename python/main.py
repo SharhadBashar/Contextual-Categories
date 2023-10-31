@@ -1,13 +1,16 @@
 import os
 import json
+import time
 import psutil
 import GPUtil
 from collections import deque
 from fastapi import FastAPI, status
 
+from s3 import S3
 from constants import *
 from logger import Logger
 from database import Database
+from check_file_update import update
 from helper import sort_hourly_transaction, json_response_message
 
 try:
@@ -59,3 +62,14 @@ def get_log():
     json_list = deque(json_list)
     json_list.appendleft(title)
     return json_list
+
+@app.get('/update/{file_name}', status_code = status.HTTP_200_OK)
+def update_file(file_name):
+    if (file_name in list(SETUP['download'].keys())):
+        update(file_name, S3())
+        if (time.time() - os.stat(os.path.join(SETUP['download'][file_name], file_name))[8] < FILE_UPDATE_TIME_DELTA):
+            Logger(200, LOG_TYPE['i'], FILE_UPDATE.format(file_name))
+        else:
+            Logger(422, LOG_TYPE['e'], FILE_UPDATE_FAIL.format(file_name))
+    else:
+        Logger(404, LOG_TYPE['e'], FILE_UPDATE_WRONG_FILE.format(file_name))
