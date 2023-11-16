@@ -1,7 +1,10 @@
+import os
 import sys
 import pytest
+import platform
 from pprint import pprint
 from datetime import datetime
+from termcolor import colored
 
 from s3 import S3
 from constants import *
@@ -42,8 +45,10 @@ if __name__ == '__main__':
 
 class Test:
     def __init__(self, functionality, type = ''):
-        if functionality == 'all':
+        if (functionality == 'all'):
             self.all()
+        elif (functionality == 'aws'):
+            assert self.aws(type) == True
     
     def all(self):
         print('all')
@@ -51,14 +56,19 @@ class Test:
     def aws(self, test_type = ''):
         s3 = S3()
         if (test_type == 'read'):
-            return s3.check_file(S3_CONTEXTUAL_WEB_API['name'], TEST_AWS_READ_FILE)
+            response = s3.check_file(S3_CONTEXTUAL_WEB_API['name'], TEST_AWS_READ_FILE)
+            return response['ResponseMetadata']['HostId'] != None
         elif(test_type == 'write'):
             now = datetime.now()
             f = open(os.path.join(PATH_DEBUG, now + TXT), 'w')
             f.write(now)
             f.close()
             s3.check_file(S3_CONTEXTUAL_WEB_API['name'], TEST_AWS_READ_FILE)
-                    
+
+def print_start():
+    cols, _ = os.get_terminal_size()
+    print(os)
+
 if __name__ == '__main__':
     tests = list(TESTS.keys())
     try:
@@ -72,8 +82,9 @@ if __name__ == '__main__':
     except:
         test_type = None
         
+    print_start()
     if (test == '-a'):
-        ans = input('You are about to run all unit tests. Do you want to proceed? [Y/n]: ')
+        ans = input('You are about to run all unit tests. Do you want to proceed? {}: '.format(colored('[Y/n]', attrs = ['bold'])))
         if (ans.lower() == 'y'):
             Test('all')
             quit()

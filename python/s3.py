@@ -16,8 +16,8 @@ class S3:
         self.s3_resource = boto3.resource('s3')
         self.s3_client = boto3.client('s3')
         
-    def check_file(self, bucket, filename):
-        return self.s3_client.head_object(Bucket = bucket, Key = filename)
+    def check_file(self, bucket, file_name):
+        return self.s3_client.head_object(Bucket = bucket, Key = file_name)
     
     def get_info(self, bucket, file_name):
         return self.s3_resource.Object(bucket, file_name)
