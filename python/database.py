@@ -34,7 +34,7 @@ class Database:
         cursor.execute(query)
         count = cursor.fetchone()[0]
         cursor.close()
-        return count 
+        return count
 
     def get_hourly_transaction(self, time_diff = -1):
         conn = pyodbc.connect(self.conn_dmp)
