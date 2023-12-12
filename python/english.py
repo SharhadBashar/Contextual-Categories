@@ -5,9 +5,9 @@ from s3 import S3
 from constants import *
 from logger import Logger
 from database import Database
+from att import Audio_To_Text_EN
 from predict_iab import Predict_IAB
 from predict_apple import Predict_Apple
-from att import Audio_To_Text_EN
 from helper import download, get_apple_cat, get_iab_cat, load_topics, del_files, json_response_message
 
 if __name__ == '__main__':

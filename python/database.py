@@ -98,7 +98,41 @@ class Database:
             })
         cursor.close()
         return podcasts
-        
+    
+    def get_custom_topic_id(self, custom_topic):
+        conn = pyodbc.connect(self.conn_dmp)
+        query = """SELECT Id
+                   FROM dbo.CustomTopics
+                   WHERE CustomTopic = {}
+                """.format(custom_topic.lower())
+        cursor = conn.cursor()
+        cursor.execute(query)
+        custom_topic_id = cursor.fetchone()[0]
+        cursor.close()
+        return custom_topic_id
+    
+    def get_podcast_cutsom_topic_new(self):
+        podcast = {}
+        conn = pyodbc.connect(self.conn_dmp)
+        query = """SELECT TOP(1) Id, TransLink, CustomCategory
+                   FROM dbo.ContextualCategories
+                   WHERE Active = 'True' AND Lock = -1
+                   ORDER BY Id DESC
+                """
+        cursor = conn.cursor()
+        cursor.execute(query)
+        podcast_db = cursor.fetchone()
+        cursor.close()
+        try:
+            podcast['id'] = podcast_db[0]
+            podcast['trans_link'] = podcast_db[1]
+            podcast['custom_topic'] = podcast_db[2]
+            return podcast
+        except:
+            return None
+    
+#---------------------------------------------------------------------------------------------------#
+
     def write_podcast(self, data):
         data['PodcastName'] = json.dumps(data['PodcastName']).replace("'", "''").strip('\"')
         data['EpisodeName'] = json.dumps(data['EpisodeName']).replace("'", "''").strip('\"')
@@ -141,6 +175,42 @@ class Database:
         cursor.execute(query)
         conn.commit()
         cursor.close()
+
+    def write_custom_topic(self, custom_topic):
+        conn = pyodbc.connect(self.conn_dmp)
+        query = """INSERT INTO dbo.CustomTopics
+                    (CustomTopic, TotalScore, Active, 
+                    StartDate, EndDate, CreatedDate, UpdatedDate)
+                   VALUES
+                    ('{}', {}, 'True', '{}', '{}', '{}', '{}')
+                """.format(
+                    custom_topic['custom_topic'],
+                    custom_topic['total_score'],
+                    custom_topic['start_date'],
+                    custom_topic['end_date'],
+                    datetime.now().strftime('%Y-%m-%d %H:%M:%S'), # CreatedDate
+                    datetime.now().strftime('%Y-%m-%d %H:%M:%S'), # UpdatedDate
+                )
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()
+        last_custom_id = cursor.lastrowid
+        cursor.close()
+        return last_custom_id
+    
+    def write_custom_topic_keyword(self, values):
+        conn = pyodbc.connect(self.conn_dmp)
+        query = """INSERT INTO dbo.CustomTopicsKeywords
+                    (Keyword, Score, CustomTopicId, CreatedDate, UpdatedDate)
+                   VALUES
+                    (%s, %d, %d, %s, %s)
+                """
+        cursor = conn.cursor()
+        cursor.executemany(query, values)
+        conn.commit()
+        cursor.close()
+
+#---------------------------------------------------------------------------------------------------#
 
     def update_podcast_lock(self, id, lock = 1):
         conn = pyodbc.connect(self.conn_dmp)
