@@ -16,12 +16,16 @@ PATH_MODEL = '../model/'
 PATH_CONFIG = '../config/'
 PATH_LOG = '../logs/internal/'
 PATH_DEBUG = '../debug/'
+PATH_CUSTOM_TOPICS = '../custom_topics/'
 
 PATH_DATA_AUDIO = os.path.join(PATH_DATA, 'audio/')
 PATH_DATA_CATEGORY = os.path.join(PATH_DATA, 'category/')
 PATH_DATA_STATIC_CATEGORY = os.path.join(PATH_DATA, 'static_category/')
 PATH_DATA_TEXT = os.path.join(PATH_DATA, 'text/')
 PATH_STOP_WORDS = os.path.join(PATH_DATA, 'stop_words/')
+PATH_CUSTOM_TOPICS_STATIC_DATA = os.path.join(PATH_CUSTOM_TOPICS, 'static_data/')
+PATH_CUSTOM_TOPICS_TOPIC = os.path.join(PATH_CUSTOM_TOPICS, 'topic/')
+PATH_CUSTOM_TOPICS_TRANSCRIPTION = os.path.join(PATH_CUSTOM_TOPICS, 'transcription/')
 
 # Files
 STOP_WORDS_EN = 'stop_words_english.pkl'
@@ -99,7 +103,11 @@ SETUP = {
         PATH_DATA_STATIC_CATEGORY,
         PATH_DATA_TEXT,
         PATH_LOG,
-        PATH_STOP_WORDS
+        PATH_STOP_WORDS,
+        PATH_CUSTOM_TOPICS,
+        PATH_CUSTOM_TOPICS_STATIC_DATA,
+        PATH_CUSTOM_TOPICS_TOPIC,
+        PATH_CUSTOM_TOPICS_TRANSCRIPTION
     ],
     'download': {
         STOP_WORDS_EN: PATH_STOP_WORDS,
