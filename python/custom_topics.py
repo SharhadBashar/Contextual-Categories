@@ -1,4 +1,3 @@
-import os
 import re
 import json
 import dateutil.parser as parser 
@@ -40,7 +39,7 @@ class Custom_Topics:
     def __init__(self):
         self.db = Database()
         
-    def add_custom_topic(self, custom_topic: Custom_Topic):
+    def add_new_custom_topic(self, custom_topic: Custom_Topic):
         values = []
         last_custom_id = self.db.write_custom_topic(custom_topic)
         for keyword_score in custom_topic['keyword_score']:
@@ -49,3 +48,6 @@ class Custom_Topics:
                            datetime.now().strftime('%Y-%m-%d %H:%M:%S')
                         ))
         self.db.write_custom_topic_keyword(values)
+
+    def find_custom_topic(self, custom_topic: Custom_Topic):
+        return True, {}

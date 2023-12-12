@@ -55,7 +55,7 @@ class Database:
         query = """SELECT TOP(1) Id, ShowId, EpisodeId, PublisherId, 
                     AppleContentFormatId,
                     PodcastName, EpisodeName, Description, Keywords,
-                    ContentUrl
+                    ContentUrl, CustomTopic
                    FROM dbo.ContextualCategories
                    WHERE PublisherId = {} AND Active = 'False' AND Lock = 0
                    ORDER BY Id DESC
@@ -75,6 +75,7 @@ class Database:
             podcast['description'] = podcast_db[7]
             podcast['keywords'] = podcast_db[8]
             podcast['content_url'] = podcast_db[9]
+            podcast['custom_topic'] = podcast_db[10]
             return podcast
         except:
             return None
@@ -111,25 +112,9 @@ class Database:
         cursor.close()
         return custom_topic_id
     
-    def get_podcast_cutsom_topic_new(self):
-        podcast = {}
-        conn = pyodbc.connect(self.conn_dmp)
-        query = """SELECT TOP(1) Id, TransLink, CustomCategory
-                   FROM dbo.ContextualCategories
-                   WHERE Active = 'True' AND Lock = -1
-                   ORDER BY Id DESC
-                """
-        cursor = conn.cursor()
-        cursor.execute(query)
-        podcast_db = cursor.fetchone()
-        cursor.close()
-        try:
-            podcast['id'] = podcast_db[0]
-            podcast['trans_link'] = podcast_db[1]
-            podcast['custom_topic'] = podcast_db[2]
-            return podcast
-        except:
-            return None
+    def get_podcast_cutsom_topic_keyword(self, custom_topic):
+        custom_topic = {}
+        return custom_topic
     
 #---------------------------------------------------------------------------------------------------#
 
@@ -207,6 +192,15 @@ class Database:
                 """
         cursor = conn.cursor()
         cursor.executemany(query, values)
+        conn.commit()
+        cursor.close()
+
+    def write_custom_topic_podcast(self, podcast_id, total_score):
+        conn = pyodbc.connect(self.conn_dmp)
+        query = """
+                """
+        cursor = conn.cursor()
+        cursor.execute(query)
         conn.commit()
         cursor.close()
 
