@@ -10,7 +10,7 @@ from constants import *
 from database import Database
 
 class Custom_Topic:
-    def __init__(self, custom_topic, keyword_score_list, total_score = 100, start_date = None, end_date = None):
+    def __init__(self, custom_topic, keyword_score_list, total_score = CUSTOM_TOPIC_TOTAL_SCORE, start_date = None, end_date = None):
         self.custom_topic = {
             'custom_topic': custom_topic.lower(),
             'keyword_score': self.get_keyword_score(keyword_score_list),
