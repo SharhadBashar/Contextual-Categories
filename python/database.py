@@ -104,17 +104,45 @@ class Database:
         conn = pyodbc.connect(self.conn_dmp)
         query = """SELECT Id
                    FROM dbo.CustomTopics
-                   WHERE CustomTopic = {}
+                   WHERE CustomTopic = '{}'
                 """.format(custom_topic.lower())
         cursor = conn.cursor()
         cursor.execute(query)
         custom_topic_id = cursor.fetchone()[0]
         cursor.close()
         return custom_topic_id
-    
-    def get_podcast_cutsom_topic_keyword(self, custom_topic):
-        custom_topic = {}
-        return custom_topic
+
+    def get_custom_topic_status(self, custom_topic):
+        conn = pyodbc.connect(self.conn_dmp)
+        query = """SELECT StartDate, EndDate
+                   FROM dbo.CustomTopics
+                   WHERE CustomTopic = '{}'
+                """.format(custom_topic.lower())
+        cursor = conn.cursor()
+        cursor.execute(query)
+        start_date, end_date = cursor.fetchone()
+        cursor.close()
+        return start_date <= datetime.now() <= end_date
+
+    def get_podcast_custom_topic_keyword(self, custom_topic):
+        custom_topic_info = {
+            'custom_topic': custom_topic,
+            'keyword': []
+        }
+        conn = pyodbc.connect(self.conn_dmp)
+        query = """SELECT CustomTopicId, TotalScore, Keyword, Score
+                   FROM dbo.CustomTopics
+                   JOIN dbo.CustomTopicsKeywords ON dbo.CustomTopics.Id = dbo.CustomTopicsKeywords.CustomTopicId
+                   WHERE dbo.CustomTopics.CustomTopic = '{}'
+                """.format(custom_topic.lower())
+        cursor = conn.cursor()
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        for row in rows:
+            custom_topic_info['id'] = row[0]
+            custom_topic_info['total_score'] = row[1]
+            custom_topic_info['keyword'].append((row[2], row[3]))
+        return custom_topic_info
     
 #---------------------------------------------------------------------------------------------------#
 
@@ -179,7 +207,8 @@ class Database:
         cursor = conn.cursor()
         cursor.execute(query)
         conn.commit()
-        last_custom_id = cursor.lastrowid
+        cursor.execute('SELECT @@IDENTITY')
+        last_custom_id = cursor.fetchone()[0]
         cursor.close()
         return last_custom_id
     
@@ -188,7 +217,7 @@ class Database:
         query = """INSERT INTO dbo.CustomTopicsKeywords
                     (Keyword, Score, CustomTopicId, CreatedDate, UpdatedDate)
                    VALUES
-                    (%s, %d, %d, %s, %s)
+                    (?, ?, ?, ?, ?)
                 """
         cursor = conn.cursor()
         cursor.executemany(query, values)

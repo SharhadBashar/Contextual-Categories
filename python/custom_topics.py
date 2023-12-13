@@ -34,7 +34,7 @@ class Custom_Topic:
             else:
                 keyword_score.append((keyword_score_list[i].lower(), keyword_score_list[i + 1]))
         return keyword_score
-    
+
 class Custom_Topics:
     def __init__(self):
         self.db = Database()

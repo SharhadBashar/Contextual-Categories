@@ -103,8 +103,8 @@ if __name__ == '__main__':
                 json_response_message(422, ERROR_DB_WRITE.format(podcast['episode_id'], error), podcast['show_id'], podcast['episode_id'], language)
                 continue
 
-            if (podcast['custom_topic']):
-                custom_topic = db.get_podcast_cutsom_topic_keyword(podcast['custom_topic'])
+            if (podcast['custom_topic'] and db.get_custom_topic_status(podcast['custom_topic'])):
+                custom_topic = db.get_podcast_custom_topic_keyword(podcast['custom_topic'])
                 result, keyword_match =  Custom_Topics().find_custom_topic(custom_topic, text_file)
                 if (result):
                     db.write_custom_topic_podcast()
