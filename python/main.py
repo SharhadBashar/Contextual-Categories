@@ -12,6 +12,7 @@ from purge import delete
 from logger import Logger
 from database import Database
 from check_file_update import update
+from custom_topics import Custom_Topics
 from helper import sort_hourly_transaction, json_response_message, add_stop_word
 
 try:
@@ -85,6 +86,15 @@ def add(language, stop_word):
         Logger(422, LOG_TYPE['e'], STOP_WORD_ADDED_FAILED.format(stop_word, language))
     S3().upload_file(os.path.join(PATH_STOP_WORDS, 'stop_words_{}.pkl'.format(language)), S3_CONTEXTUAL_WEB_API['name'])
     Logger(200, LOG_TYPE['i'], STOP_WORD_FILE_UPLOADED.format(language))
+
+@app.get('/add_custom_topic/{custom_topic_json}', status_code = status.HTTP_200_OK)
+def add_custom_topic(custom_topic_json):
+    try:
+        Custom_Topics().add_new_custom_topic(custom_topic_json)
+        Logger(200, LOG_TYPE['i'], NEW_CUSTOM_TOPIC_ADDED.format(custom_topic_json))
+    except Exception as error:
+        Logger(400, LOG_TYPE['e'], ERROR_NEW_CUSTOM_TOPIC_ADDED.format(custom_topic_json, error))
+    
 
 @app.get('/pur9e', status_code = status.HTTP_200_OK)
 def purge():

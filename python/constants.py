@@ -144,6 +144,7 @@ STOP_WORD_FILE_UPLOADED = '{} stop word file uploaded to S3'
 FILE_PRUGE_COUNT = '{} files are to be deleted'
 CUSTOM_TOPIC_FOUND = '[Podcast {}] Has Custom Topic: {}. Podcast written to DB'
 CUSTOM_TOPIC_NOT_FOUND = '[Podcast {}] Does not have Custom Topic: {}. Podcast NOT written to DB'
+NEW_CUSTOM_TOPIC_ADDED = 'New Custom Topic: {} added to DB'
 
 # Error Messages
 ERROR_START_UP = 'Startup Error with {}. Full Error Traceback: {}'
@@ -168,6 +169,7 @@ STOP_WORDS_FILE_NOT_FOUND = '{} stop words file not found. Full Error Traceback:
 STOP_WORD_ADDED_FAILED = '{} could not be added as a {} stop word. Check log for error'
 ERROR_CUSTOM_TOPIC_DB_WRITE = '[Podcast {}] Custom Topic: {}. Error -> unable to write to database. Full Error Traceback: {}'
 ERROR_CUSTOM_TOPIC_JSON_DELETE_FILE = 'Error -> Unable to delete Custom Topic JSON file: {}. Full Error Traceback: {}'
+ERROR_NEW_CUSTOM_TOPIC_ADDED = 'New Custom Topic: {} FAILED to be added to DB. Full Error Traceback: {}'
 
 # Tests
 TESTS = {
