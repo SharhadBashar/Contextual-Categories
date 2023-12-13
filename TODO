@@ -1,11 +1,2 @@
-Write functions to upload custom topics:
-1. add a json template on s3 bucket with examples
-2. add a endpoint that will:
-    a. take file name (name on s3 bucket)
-    b. downlaod file from s3
-    c. take info from json file
-    d. write to databse tables (both custom topics and keywords)
-    e. delete file
-    f. log that it was successfully written and deleted
 Write tests for AWS read and write
 Write tests for database read, write, update, delete
