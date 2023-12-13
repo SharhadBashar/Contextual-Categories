@@ -162,6 +162,7 @@ FILE_UPDATE_WRONG_FILE = '[File {}] Does not exist. Please check again'
 STOP_WORDS_FILE_NOT_FOUND = '{} stop words file not found. Full Error Traceback: {}'
 STOP_WORD_ADDED_FAILED = '{} could not be added as a {} stop word. Check log for error'
 ERROR_CUSTOM_TOPIC_DB_WRITE = '[Podcast {}] Custom Topic: {}. Error -> unable to write to database. Full Error Traceback: {}'
+ERROR_CUSTOM_TOPIC_JSON_DELETE_FILE = 'Error -> Unable to delete Custom Topic JSON file: {}. Full Error Traceback: {}'
 
 # Tests
 TESTS = {
