@@ -110,9 +110,9 @@ if __name__ == '__main__':
             if (podcast['custom_topic'] and db.get_custom_topic_status(podcast['custom_topic'])):
                 try:
                     custom_topic = db.get_podcast_custom_topic_keyword(podcast['custom_topic'])
-                    result, keyword_match =  Custom_Topics().find_custom_topic(custom_topic, text_file)
+                    result, total_score, keyword_match =  Custom_Topics().find_custom_topic(custom_topic, text_file)
                     if (result):
-                        db.write_custom_topic_podcast()
+                        db.write_custom_topic_podcast(custom_topic['id'], podcast['id'], total_score, keyword_match)
                         Logger(201, LOG_TYPE['i'], CUSTOM_TOPIC_FOUND.format(podcast['episode_id'], podcast['custom_topic']), podcast['show_id'], podcast['episode_id'], language)
                     else:
                         Logger(201, LOG_TYPE['i'], CUSTOM_TOPIC_NOT_FOUND.format(podcast['episode_id'], podcast['custom_topic']), podcast['show_id'], podcast['episode_id'], language)

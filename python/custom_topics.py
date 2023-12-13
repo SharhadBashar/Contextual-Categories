@@ -74,4 +74,4 @@ class Custom_Topics:
             count = text.count(keyword)
             keyword_match[keyword] = count
             podcast_score += score * count
-        return podcast_score >= custom_topic['total_score'], keyword_match
+        return podcast_score >= custom_topic['total_score'], podcast_score, keyword_match

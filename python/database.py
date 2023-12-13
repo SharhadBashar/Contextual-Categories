@@ -224,10 +224,20 @@ class Database:
         conn.commit()
         cursor.close()
 
-    def write_custom_topic_podcast(self, podcast_id, total_score):
+    def write_custom_topic_podcast(self, custom_topic_id, podcast_id, total_score, keyword_match):
         conn = pyodbc.connect(self.conn_dmp)
-        query = """
-                """
+        query = """INSERT INTO dbo.CustomTopicsPodcasts
+                    (CustomTopicId, PodcastId, TotalScore, KeywordMatch, CreatedDate, UpdatedDate)
+                   VALUES
+                    ({}, {}, {}, '{}', '{}', '{}')
+                """.format(
+                    custom_topic_id,
+                    podcast_id,
+                    total_score,
+                    str(json.dumps(keyword_match, ensure_ascii = False)),
+                    datetime.now().strftime('%Y-%m-%d %H:%M:%S'), # CreatedDate
+                    datetime.now().strftime('%Y-%m-%d %H:%M:%S') # UpdatedDate
+                )
         cursor = conn.cursor()
         cursor.execute(query)
         conn.commit()
