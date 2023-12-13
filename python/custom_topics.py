@@ -47,7 +47,7 @@ class Custom_Topics:
         self.db = Database()
 
     def _download_custom_topic_json(self, custom_topic_json):
-        S3().download_file(custom_topic_json, S3_CONTEXTUAL_WEB_API['name'], PATH_CUSTOM_TOPICS)
+        S3().download_file(custom_topic_json, S3_CUSTOM_TOPICS['name'], PATH_CUSTOM_TOPICS)
 
     def _load_custom_topic_json(self, custom_topic_json):
         custom_topic = json.load(open(os.path.join(PATH_CUSTOM_TOPICS, custom_topic_json)))

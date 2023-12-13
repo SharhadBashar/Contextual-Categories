@@ -91,6 +91,11 @@ S3_CONTEXTUAL_WEB_API = {
     'link': 'https://s3.console.aws.amazon.com/s3/buckets/ts-contextual-web-api?region=us-east-1'
 }
 
+S3_CUSTOM_TOPICS = {
+    'name': 'ts-contextual-web-api',
+    'link': 'https://s3.console.aws.amazon.com/s3/buckets/ts-contextual-web-api?region=us-east-1'
+}
+
 SETUP = {
     'directory': [
         PATH_DATA,
