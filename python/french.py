@@ -8,6 +8,7 @@ from database import Database
 from att import Audio_To_Text_FR
 from predict_iab import Predict_IAB
 from predict_apple import Predict_Apple
+from custom_topics import Custom_Topics
 from helper import download, get_apple_cat, get_iab_cat, load_topics, del_files, json_response_message
 
 if __name__ == '__main__':
@@ -105,6 +106,19 @@ if __name__ == '__main__':
             except Exception as error:
                 json_response_message(422, ERROR_DB_WRITE.format(podcast['episode_id'], error), podcast['show_id'], podcast['episode_id'], language)
                 continue
+
+            if (podcast['custom_topic'] and db.get_custom_topic_status(podcast['custom_topic'])):
+                try:
+                    custom_topic = db.get_podcast_custom_topic_keyword(podcast['custom_topic'])
+                    result, keyword_match =  Custom_Topics().find_custom_topic(custom_topic, text_file)
+                    if (result):
+                        db.write_custom_topic_podcast()
+                        Logger(201, LOG_TYPE['i'], CUSTOM_TOPIC_FOUND.format(podcast['episode_id'], podcast['custom_topic']), podcast['show_id'], podcast['episode_id'], language)
+                    else:
+                        Logger(201, LOG_TYPE['i'], CUSTOM_TOPIC_NOT_FOUND.format(podcast['episode_id'], podcast['custom_topic']), podcast['show_id'], podcast['episode_id'], language)
+                except Exception as error:
+                    json_response_message(422, ERROR_CUSTOM_TOPIC_DB_WRITE.format(podcast['episode_id'], podcast['custom_topic'], error), podcast['show_id'], podcast['episode_id'], language)
+                    continue
 
             del_files(file_name, text_file, podcast['show_id'], podcast['episode_id'], language)
 

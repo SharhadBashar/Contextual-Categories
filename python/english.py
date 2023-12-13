@@ -104,10 +104,17 @@ if __name__ == '__main__':
                 continue
 
             if (podcast['custom_topic'] and db.get_custom_topic_status(podcast['custom_topic'])):
-                custom_topic = db.get_podcast_custom_topic_keyword(podcast['custom_topic'])
-                result, keyword_match =  Custom_Topics().find_custom_topic(custom_topic, text_file)
-                if (result):
-                    db.write_custom_topic_podcast()
+                try:
+                    custom_topic = db.get_podcast_custom_topic_keyword(podcast['custom_topic'])
+                    result, keyword_match =  Custom_Topics().find_custom_topic(custom_topic, text_file)
+                    if (result):
+                        db.write_custom_topic_podcast()
+                        Logger(201, LOG_TYPE['i'], CUSTOM_TOPIC_FOUND.format(podcast['episode_id'], podcast['custom_topic']), podcast['show_id'], podcast['episode_id'], language)
+                    else:
+                        Logger(201, LOG_TYPE['i'], CUSTOM_TOPIC_NOT_FOUND.format(podcast['episode_id'], podcast['custom_topic']), podcast['show_id'], podcast['episode_id'], language)
+                except Exception as error:
+                    json_response_message(422, ERROR_CUSTOM_TOPIC_DB_WRITE.format(podcast['episode_id'], podcast['custom_topic'], error), podcast['show_id'], podcast['episode_id'], language)
+                    continue
 
             del_files(file_name, text_file, podcast['show_id'], podcast['episode_id'], language)
 

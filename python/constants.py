@@ -136,6 +136,8 @@ FAIL_PODCAST_UNLOCK = '[DB ID {}] Failed Podcast unlocked'
 STOP_WORD_ADDED = '{} added as a {} stop word'
 STOP_WORD_FILE_UPLOADED = '{} stop word file uploaded to S3'
 FILE_PRUGE_COUNT = '{} files are to be deleted'
+CUSTOM_TOPIC_FOUND = '[Podcast {}] Has Custom Topic: {}. Podcast written to DB'
+CUSTOM_TOPIC_NOT_FOUND = '[Podcast {}] Does not have Custom Topic: {}. Podcast NOT written to DB'
 
 # Error Messages
 ERROR_START_UP = 'Startup Error with {}. Full Error Traceback: {}'
@@ -158,6 +160,7 @@ FILE_UPDATE_FAIL = '[File {}] Could NOT be updated'
 FILE_UPDATE_WRONG_FILE = '[File {}] Does not exist. Please check again'
 STOP_WORDS_FILE_NOT_FOUND = '{} stop words file not found. Full Error Traceback: {}'
 STOP_WORD_ADDED_FAILED = '{} could not be added as a {} stop word. Check log for error'
+ERROR_CUSTOM_TOPIC_DB_WRITE = '[Podcast {}] Custom Topic: {}. Error -> unable to write to database. Full Error Traceback: {}'
 
 # Tests
 TESTS = {

@@ -49,5 +49,5 @@ class Custom_Topics:
                         ))
         self.db.write_custom_topic_keyword(values)
 
-    def find_custom_topic(self, custom_topic: Custom_Topic):
+    def find_custom_topic(self, custom_topic: Custom_Topic, text_file):
         return True, {}
