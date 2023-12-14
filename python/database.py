@@ -159,7 +159,7 @@ class Database:
         conn = pyodbc.connect(self.conn_dmp)
         query = """SELECT Id, TotalScore
                    FROM dbo.CustomTopics
-                   WHERE '{}' BETWEEN StartDate AND EndDate
+                   WHERE '{}' BETWEEN StartDate AND EndDate AND Active = 'True'
                 """.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
         cursor = conn.cursor()
         cursor.execute(query)
