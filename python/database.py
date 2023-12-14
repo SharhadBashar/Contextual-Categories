@@ -55,6 +55,36 @@ class Database:
         query = """SELECT TOP(1) Id, ShowId, EpisodeId, PublisherId, 
                     AppleContentFormatId,
                     PodcastName, EpisodeName, Description, Keywords,
+                    ContentUrl
+                   FROM dbo.ContextualCategories
+                   WHERE PublisherId = {} AND Active = 'False' AND Lock = 0
+                   ORDER BY Id DESC
+                """.format(publisher_id)
+        cursor = conn.cursor()
+        cursor.execute(query)
+        podcast_db = cursor.fetchone()
+        cursor.close()
+        try:
+            podcast['id'] = podcast_db[0]
+            podcast['show_id'] = podcast_db[1]
+            podcast['episode_id'] = podcast_db[2]
+            podcast['publisher_id'] = podcast_db[3]
+            podcast['apple_cat'] = podcast_db[4]
+            podcast['podcast_name'] = podcast_db[5]
+            podcast['episode_name'] = podcast_db[6]
+            podcast['description'] = podcast_db[7]
+            podcast['keywords'] = podcast_db[8]
+            podcast['content_url'] = podcast_db[9]
+            return podcast
+        except:
+            return None
+
+    def get_podcast_new_custom_topic(self, publisher_id):
+        podcast = {}
+        conn = pyodbc.connect(self.conn_dmp)
+        query = """SELECT TOP(1) Id, ShowId, EpisodeId, PublisherId, 
+                    AppleContentFormatId,
+                    PodcastName, EpisodeName, Description, Keywords,
                     ContentUrl, CustomTopic
                    FROM dbo.ContextualCategories
                    WHERE PublisherId = {} AND Active = 'False' AND Lock = 0
@@ -124,7 +154,37 @@ class Database:
         cursor.close()
         return start_date <= datetime.now() <= end_date
 
-    def get_podcast_custom_topic_keyword(self, custom_topic):
+    def get_all_active_custom_status(self):
+        custom_topics_active = []
+        conn = pyodbc.connect(self.conn_dmp)
+        query = """SELECT Id, TotalScore
+                   FROM dbo.CustomTopics
+                   WHERE '{}' BETWEEN StartDate AND EndDate
+                """.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+        cursor = conn.cursor()
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        cursor.close()
+        for row in rows:
+            custom_topics_active.append((row[0], row[1]))
+        return custom_topics_active
+
+    def get_podcast_custom_topic_keyword(self, custom_topic_id):
+        keywords = []
+        conn = pyodbc.connect(self.conn_dmp)
+        query = """SELECT Keyword, Score
+                   FROM dbo.CustomTopicsKeywords
+                   WHERE CustomTopicId = {}
+                """.format(custom_topic_id)
+        cursor = conn.cursor()
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        for row in rows:
+            keywords.append((row[0], row[1]))
+        cursor.close()
+        return keywords
+
+    def get_podcast_custom_topic_keyword_custom_topic(self, custom_topic):
         custom_topic_info = {
             'custom_topic': custom_topic,
             'keyword': []
@@ -138,6 +198,7 @@ class Database:
         cursor = conn.cursor()
         cursor.execute(query)
         rows = cursor.fetchall()
+        cursor.close()
         for row in rows:
             custom_topic_info['id'] = row[0]
             custom_topic_info['total_score'] = row[1]

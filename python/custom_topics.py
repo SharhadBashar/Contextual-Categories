@@ -95,15 +95,15 @@ class Custom_Topics:
 					)
         return text
 
-    def find_custom_topic(self, custom_topic, text_file):
+    def find_custom_topic(self, keywords, total_score, text_file):
         podcast_score = 0
         keyword_match = {}
         text = self.clean_text(pickle.load(open(os.path.join(self.text_data_path, text_file), 'rb')))
-        for keyword, score in custom_topic['keyword']:
+        for keyword, score in keywords:
             count = text.count(keyword)
             keyword_match[keyword] = count
             podcast_score += score * count
-        return podcast_score >= custom_topic['total_score'], podcast_score, keyword_match
+        return podcast_score >= total_score, podcast_score, keyword_match
 
 if __name__ == '__main__':
     Custom_Topics().add_new_custom_topic('euro.json')
