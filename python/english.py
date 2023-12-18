@@ -103,17 +103,43 @@ if __name__ == '__main__':
                 json_response_message(422, ERROR_DB_WRITE.format(podcast['episode_id'], error), podcast['show_id'], podcast['episode_id'], language)
                 continue
 
-            custom_topics = db.get_all_active_custom_status()
-            for custom_topic_id, total_score in custom_topics:
-                custom_topic_keywords = db.get_podcast_custom_topic_keyword(custom_topic_id)
+            custom_topics = db.get_all_active_custom_topics()
+            for custom_topic_id, custom_topic, total_score in custom_topics:
+                Logger(200, 
+                       LOG_TYPE['i'], 
+                       CUSTOM_TOPIC_SEARCH.format(podcast['episode_id'], custom_topic), 
+                       podcast['show_id'], 
+                       podcast['episode_id'], 
+                       language
+                    )
+                custom_topic_keywords = db.get_custom_topic_keywords(custom_topic_id)
                 result, podcast_score, keyword_match = Custom_Topics().find_custom_topic(custom_topic_keywords, total_score, text_file)
                 if result:
                     try:
                         db.write_custom_topic_podcast(custom_topic_id, podcast['id'], podcast_score, keyword_match)
-                        Logger(201, LOG_TYPE['i'], CUSTOM_TOPIC_FOUND.format(podcast['episode_id'], podcast['custom_topic']), podcast['show_id'], podcast['episode_id'], language)
+                        Logger(201, 
+                               LOG_TYPE['i'], 
+                               CUSTOM_TOPIC_FOUND.format(podcast['episode_id'], custom_topic), 
+                               podcast['show_id'], 
+                               podcast['episode_id'], 
+                               language
+                            )
                     except Exception as error:
-                        json_response_message(422, ERROR_CUSTOM_TOPIC_DB_WRITE.format(podcast['episode_id'], podcast['custom_topic'], error), podcast['show_id'], podcast['episode_id'], language)
+                        json_response_message(422, 
+                            ERROR_CUSTOM_TOPIC_DB_WRITE.format(podcast['episode_id'], custom_topic, error), 
+                            podcast['show_id'], 
+                            podcast['episode_id'], 
+                            language
+                        )
                         continue
+                else:
+                    Logger(200, 
+                       LOG_TYPE['i'], 
+                       CUSTOM_TOPIC_NOT_FOUND.format(podcast['episode_id'], custom_topic), 
+                           podcast['show_id'], 
+                           podcast['episode_id'], 
+                           language
+                       )
             # if (podcast['custom_topic'] and db.get_custom_topic_status(podcast['custom_topic'])):
             #     try:
             #         custom_topic = db.get_podcast_custom_topic_keyword(podcast['custom_topic'])

@@ -142,8 +142,9 @@ FAIL_PODCAST_UNLOCK = '[DB ID {}] Failed Podcast unlocked'
 STOP_WORD_ADDED = '{} added as a {} stop word'
 STOP_WORD_FILE_UPLOADED = '{} stop word file uploaded to S3'
 FILE_PRUGE_COUNT = '{} files are to be deleted'
-CUSTOM_TOPIC_FOUND = '[Podcast {}] Has Custom Topic: {}. Podcast written to DB'
-CUSTOM_TOPIC_NOT_FOUND = '[Podcast {}] Does not have Custom Topic: {}. Podcast NOT written to DB'
+CUSTOM_TOPIC_SEARCH = '[Podcast {}] Searching for Custom Topic: {}'
+CUSTOM_TOPIC_NOT_FOUND = '[Podcast {}] Does not have Custom Topic: {}.'
+CUSTOM_TOPIC_FOUND = '[Podcast {}] Has Custom Topic: {}. Podcast written to Custom Topics DB'
 NEW_CUSTOM_TOPIC_ADDED = 'New Custom Topic: {} added to DB'
 
 # Error Messages

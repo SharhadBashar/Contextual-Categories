@@ -154,10 +154,10 @@ class Database:
         cursor.close()
         return start_date <= datetime.now() <= end_date
 
-    def get_all_active_custom_status(self):
+    def get_all_active_custom_topics(self):
         custom_topics_active = []
         conn = pyodbc.connect(self.conn_dmp)
-        query = """SELECT Id, TotalScore
+        query = """SELECT Id, CustomTopic, TotalScore
                    FROM dbo.CustomTopics
                    WHERE '{}' BETWEEN StartDate AND EndDate AND Active = 'True'
                 """.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
@@ -166,10 +166,10 @@ class Database:
         rows = cursor.fetchall()
         cursor.close()
         for row in rows:
-            custom_topics_active.append((row[0], row[1]))
+            custom_topics_active.append((row[0], row[1], row[2]))
         return custom_topics_active
 
-    def get_podcast_custom_topic_keyword(self, custom_topic_id):
+    def get_custom_topic_keywords(self, custom_topic_id):
         keywords = []
         conn = pyodbc.connect(self.conn_dmp)
         query = """SELECT Keyword, Score
@@ -184,7 +184,7 @@ class Database:
         cursor.close()
         return keywords
 
-    def get_podcast_custom_topic_keyword_custom_topic(self, custom_topic):
+    def get_all_custom_topic_keywords_custom_topic(self, custom_topic):
         custom_topic_info = {
             'custom_topic': custom_topic,
             'keyword': []
