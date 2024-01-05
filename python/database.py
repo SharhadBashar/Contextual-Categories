@@ -352,3 +352,18 @@ class Database:
         cursor.execute(query)
         conn.commit()
         cursor.close()
+
+    def update_custom_topic_status(self, id, status = False):
+        conn = pyodbc.connect(self.conn_dmp)
+        query = """UPDATE dbo.CustomTopics
+                   SET Active = '{}', UpdatedDate = '{}'
+                   WHERE Id = {}
+                """.format(
+                    status,
+                    datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                    id
+                )
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()
+        cursor.close()
