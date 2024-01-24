@@ -47,7 +47,7 @@ JSON = '.json'
 S3_URI = 's3://'
 
 # Models
-WHISPER_MODEL_TYPES = ['tiny.en', 'tiny', 'small', 'base', 'medium', 'large']
+WHISPER_MODEL_TYPES = ['tiny.en', 'tiny', 'small', 'base', 'medium', 'large', 'large-v2', 'large-v3']
 IAB_MODELS = ['sentence-transformers/all-mpnet-base-v2', 'diptanuc/all-mpnet-base-v2', 'bert-base-nli-mean-tokens', 'bert-large-uncased']
 IAB_MODELS_PRAMS = {
     'sentence-transformers/all-mpnet-base-v2': 768, 
