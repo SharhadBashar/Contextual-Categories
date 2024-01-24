@@ -44,7 +44,7 @@ class Custom_Topic:
 class Custom_Topics:
     def __init__(self, text_data_path = None):
         self.text_data_path = text_data_path if text_data_path else PATH_DATA_TEXT
-        self.db = Database()
+        self.db = Database(env = 'prd')
 
     def _download_custom_topic_json(self, custom_topic_json):
         S3().download_file(custom_topic_json, S3_CUSTOM_TOPICS['name'], PATH_CUSTOM_TOPICS)
