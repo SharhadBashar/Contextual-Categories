@@ -43,7 +43,7 @@ class Audio_To_Text_EN:
 			return json_response_message(422, ERROR_SAVE_TEXT.format(episode_id, error), show_id, episode_id, language)
 
 class Audio_To_Text_FR:
-	def __init__(self, audio_data_path = None, text_data_path = None, model_type = 'tiny'):
+	def __init__(self, audio_data_path = None, text_data_path = None, model_type = 'small'):
 		self.language = 'french'
 		self.audio_data_path = audio_data_path if audio_data_path else PATH_DATA_AUDIO
 		self.text_data_path = text_data_path if text_data_path else PATH_DATA_TEXT
