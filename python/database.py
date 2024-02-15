@@ -190,7 +190,7 @@ class Database:
             'keyword': []
         }
         conn = pyodbc.connect(self.conn_dmp)
-        query = """SELECT CustomTopicId, TotalScore, Keyword, Score
+        query = """SELECT CustomTopicId, TotalScore, Active, StartDate, EndDate, Keyword, Score
                    FROM dbo.CustomTopics
                    JOIN dbo.CustomTopicsKeywords ON dbo.CustomTopics.Id = dbo.CustomTopicsKeywords.CustomTopicId
                    WHERE dbo.CustomTopics.CustomTopic = '{}'
@@ -202,7 +202,10 @@ class Database:
         for row in rows:
             custom_topic_info['id'] = row[0]
             custom_topic_info['total_score'] = row[1]
-            custom_topic_info['keyword'].append((row[2], row[3]))
+            custom_topic_info['status'] = row[2]
+            custom_topic_info['start_date'] = row[3]
+            custom_topic_info['end_date'] = row[4]
+            custom_topic_info['keyword'].append((row[5], row[6]))
         return custom_topic_info
     
 #---------------------------------------------------------------------------------------------------#
