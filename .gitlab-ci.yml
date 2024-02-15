@@ -4,19 +4,19 @@ include:
     file: '.gitlab-ci.deploy-python.yml'
 
 # Run stg deploy on push
-install-python-app-stg:
-  tags:
-    - targetspot
-    - stg
-  variables:
-    VAULT_TOKEN: $VAULT_TOKEN_STG
-    VAULT_URL: $VAULT_URL_STG
-    SRV_LIST: "ppiq-gpu-test-1.aws.targetspot.com"
-    SVC_USER: "ppiq"
-    PROJECT_NAME: "contextual_categories"
-    TRACE: "0"
-  extends:
-    - .deploy_python_categories
+# install-python-app-stg:
+#   tags:
+#     - targetspot
+#     - stg
+#   variables:
+#     VAULT_TOKEN: $VAULT_TOKEN_STG
+#     VAULT_URL: $VAULT_URL_STG
+#     SRV_LIST: "ppiq-gpu-test-1.aws.targetspot.com"
+#     SVC_USER: "ppiq"
+#     PROJECT_NAME: "contextual_categories"
+#     TRACE: "0"
+#   extends:
+#     - .deploy_python_categories
 
 # Run prd deploy on web execution
 install-python-app-prd:
